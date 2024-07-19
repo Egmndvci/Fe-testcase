@@ -1,28 +1,34 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { employeeData } from './assets/data';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
 
 function App() {
   const [employees, setEmployees] = useState(employeeData);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm('Bu çalışanı silmek istediğinizden emin misiniz?');
-    if (confirmDelete) {
-      setEmployees(employees.filter(employee => employee.id !== id));
-    }
-  };
-
+  // Detaylar butonu işlevi
   const handleDetails = (employee) => {
     console.log(employee);
     setSelectedEmployee(employee);
     setShowModal(true);
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  // Modal'ı kapatma işlevi
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedEmployee(null);
+  };
+
+  // Silme işlemi
+  const handleDelete = (employeeId) => {
+    const confirmed = window.confirm('Bu çalışanı silmek istediğinizden emin misiniz?');
+    if (confirmed) {
+      setEmployees(employees.filter(employee => employee.id !== employeeId));
+    }
+  };
 
   return (
     <div className='table_container'>
@@ -49,17 +55,17 @@ function App() {
       {selectedEmployee && (
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Employee Details</Modal.Title>
+            <Modal.Title>Çalışan Detayları</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Name: {selectedEmployee.name} {selectedEmployee.surname}</p>
+            <p>İsim: {selectedEmployee.name} {selectedEmployee.surname}</p>
             <p>Email: {selectedEmployee.email}</p>
-            <p>Phone: {selectedEmployee.phoneNumber}</p>
-            <p>Knowledge Level: {selectedEmployee.levelOfKnowledge}</p>
+            <p>Telefon: {selectedEmployee.phoneNumber}</p>
+            <p>Bilgi Seviyesi: {selectedEmployee.levelOfKnowledge}</p>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseModal}>
-              Close
+              Kapat
             </Button>
           </Modal.Footer>
         </Modal>
